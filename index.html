@@ -1,1 +1,37 @@
 
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Cerebro 2 - Red Neuronal</title>
+<style>
+body { font-family: 'Courier New', monospace; background:
+#000; color: #0f0; padding: 20px; }
+.nodo { border: 1px solid #0f0; padding: 10px; margin:
+10px; width: 200px; }
+</style>
+</head>
+<body>
+<h1>Cerebro 2: Red Neuronal Funcional</h1>
+<div class="nodo">
+<h3>Neurona Artificial</h3>
+<p>Entrada: <span id="input">0</span></p>
+<p>Salida: <span id="output">0</span></p>
+</div>
+<button onclick="ejecutarNeurona()">Disparar Neurona</button>
+<script>
+function sigmoide(x) {
+return 1 / (1 + Math.exp(-x));
+}
+function ejecutarNeurona() {
+let peso = 0.5;
+let entrada = Math.random();
+let resultado = sigmoide(entrada * peso);
+document.getElementById('input').innerText =
+entrada.toFixed(2);
+document.getElementById('output').innerText =
+resultado.toFixed(4);
+}
+</script>
+</body>
+</html>
