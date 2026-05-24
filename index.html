@@ -12,6 +12,7 @@
         .node:hover { filter: brightness(0.8); stroke-width: 2; }
         text { fill: #000; font-size: 9px; font-weight: bold; pointer-events: none; text-anchor: middle; }
         .line { stroke: #ccc; stroke-width: 1; }
+        .sub-link { color: #555; display: block; margin: 5px 0; cursor: pointer; text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -41,19 +42,10 @@
             { id: "ia", label: "IA", color: "#FFD1BA" }
         ];
 
-        const contenido = {
-            filosofia: "Área de investigación sobre el pensamiento mexicano y sociedad del conocimiento.",
-            derecho: "Gestión de normativa educativa y docencia jurídica.",
-            herbolaria: "Estudios sobre propiedades naturales y medicina tradicional.",
-            masoneria: "Estudio de rituales, simbología y arquitectura sagrada.",
-            magia: "Metafísica, sistemas simbólicos y teoría del ritual.",
-            psicologia: "Procesos cognitivos y psicopedagogía.",
-            sociologia: "Dinámicas sociales y estructuras culturales.",
-            pedagogia: "Modelo CONSTRUYE, CIIJ y pedagogía digital.",
-            geek: "Cultura pop, gaming y coleccionismo.",
-            programacion: "Desarrollo de sistemas, Debian y WebDev.",
-            ia: "Automatización, modelos de lenguaje, n8n y herramientas de IA."
-        };
+        const filoSubtemas = [
+            "Griega", "Helénica", "Medieval", "Renacimiento", "Modernidad", 
+            "Alemana", "Francesa", "Inglesa", "Norteamericana", "Epistemología"
+        ];
 
         const container = document.getElementById('nodos-container');
         const centerX = 400, centerY = 250, radius = 190;
@@ -73,7 +65,13 @@
         });
 
         function mostrar(id) {
-            document.getElementById('pantalla').innerHTML = `<h2>${id.toUpperCase()}</h2><p>${contenido[id]}</p>`;
+            if (id === 'filosofia') {
+                let html = `<h2>FILOSOFÍA</h2><p>Corrientes y periodos de estudio:</p>`;
+                filoSubtemas.forEach(s => html += `<span class="sub-link">${s}</span>`);
+                document.getElementById('pantalla').innerHTML = html;
+            } else {
+                document.getElementById('pantalla').innerHTML = `<h2>${id.toUpperCase()}</h2><p>Contenido en desarrollo para ${id}...</p>`;
+            }
         }
     </script>
 </body>
