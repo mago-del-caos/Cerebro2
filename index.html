@@ -2,57 +2,61 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Cerebro 2 | Mapa de Conocimiento</title>
+    <title>Cerebro 2 | Pablo Adrian Rivera Juvenal</title>
     <style>
-        body { font-family: 'Courier New', monospace; background: #000; color: #0f0; padding: 20px; }
-        h1 { color: #fff; text-align: center; text-shadow: 0 0 5px #0f0; }
-        .nodo-activo { border: 1px solid #0f0; padding: 20px; margin: 20px auto; background: #050505; max-width: 600px; min-height: 100px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #ffffff; color: #333; padding: 20px; }
+        h1 { text-align: center; color: #222; }
+        .nodo-activo { border: 2px solid #333; padding: 25px; margin: 20px auto; background: #f9f9f9; max-width: 600px; border-radius: 10px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
         .red-svg { width: 100%; max-width: 800px; height: 500px; margin: 0 auto; display: block; }
-        .node { fill: #000; stroke: #0f0; stroke-width: 2; cursor: pointer; transition: 0.3s; }
-        .node:hover { fill: #0f0; }
-        text { fill: #0f0; font-size: 10px; font-weight: bold; pointer-events: none; text-anchor: middle; }
-        .line { stroke: #0f0; stroke-width: 1; opacity: 0.2; }
+        .node { stroke: #333; stroke-width: 1; cursor: pointer; transition: 0.3s; }
+        .node:hover { filter: brightness(0.8); stroke-width: 2; }
+        text { fill: #000; font-size: 9px; font-weight: bold; pointer-events: none; text-anchor: middle; }
+        .line { stroke: #ccc; stroke-width: 1; }
     </style>
 </head>
 <body>
-    <h1>Cerebro 2: Estructura Mental</h1>
+    <h1>Cerebro 2: Mapa de Conocimiento</h1>
     
     <svg class="red-svg" viewBox="0 0 800 500">
-        <!-- Nodos -->
         <g id="nodos-container"></g>
     </svg>
 
     <div id="pantalla" class="nodo-activo">
         <h2>Nodo Central</h2>
-        <p>Selecciona una rama para acceder a tu base de conocimientos.</p>
+        <p>Selecciona una rama para integrar o consultar información.</p>
     </div>
 
     <script>
         const temas = [
-            { id: "filosofia", label: "FILOSOFÍA" }, { id: "derecho", label: "DERECHO" },
-            { id: "herbolaria", label: "HERBOLARIA" }, { id: "masoneria", label: "MASONERÍA" },
-            { id: "magia", label: "MAGIA" }, { id: "psicologia", label: "PSICOLOGÍA" },
-            { id: "sociologia", label: "SOCIOLOGÍA" }, { id: "pedagogia", label: "PEDAGOGÍA" },
-            { id: "geek", label: "GEEK" }, { id: "programacion", label: "PROGRAMACIÓN" },
-            { id: "ia", label: "IA" }
+            { id: "filosofia", label: "FILOSOFÍA", color: "#FFB3BA" },
+            { id: "derecho", label: "DERECHO", color: "#FFDFBA" },
+            { id: "herbolaria", label: "HERBOLARIA", color: "#FFFFBA" },
+            { id: "masoneria", label: "MASONERÍA", color: "#BAFFC9" },
+            { id: "magia", label: "MAGIA", color: "#BAE1FF" },
+            { id: "psicologia", label: "PSICOLOGÍA", color: "#E8BAFF" },
+            { id: "sociologia", label: "SOCIOLOGÍA", color: "#FFBAF1" },
+            { id: "pedagogia", label: "PEDAGOGÍA", color: "#BAFFEF" },
+            { id: "geek", label: "GEEK", color: "#D1FFBA" },
+            { id: "programacion", label: "PROGRAMACIÓN", color: "#BAF1FF" },
+            { id: "ia", label: "IA", color: "#FFD1BA" }
         ];
 
-        const descripciones = {
-            filosofia: "Pensamiento mexicano, Sociedad del Conocimiento, existencialismo.",
-            derecho: "Docencia jurídica, normativa educativa y legal.",
-            herbolaria: "Estudio de propiedades naturales y medicina tradicional.",
-            masoneria: "Ritos, simbología, arquitectura sagrada y trabajo en logia.",
-            magia: "Sistemas simbólicos, teoría del ritual y metafísica.",
-            psicologia: "Psicopedagogía, conducta humana y procesos cognitivos.",
-            sociologia: "Dinámicas de grupos, estructuras sociales y evolución cultural.",
-            pedagogia: "Innovación, modelo CONSTRUYE, CIIJ y diseño de aprendizaje.",
-            geek: "Cultura pop, juegos, coleccionismo y estética digital.",
-            programacion: "Debian, desarrollo web, arquitectura de sistemas.",
-            ia: "Automatización, modelos de lenguaje, n8n y herramientas predictivas."
+        const contenido = {
+            filosofia: "Área de investigación sobre el pensamiento mexicano y sociedad del conocimiento.",
+            derecho: "Gestión de normativa educativa y docencia jurídica.",
+            herbolaria: "Estudios sobre propiedades naturales y medicina tradicional.",
+            masoneria: "Estudio de rituales, simbología y arquitectura sagrada.",
+            magia: "Metafísica, sistemas simbólicos y teoría del ritual.",
+            psicologia: "Procesos cognitivos y psicopedagogía.",
+            sociologia: "Dinámicas sociales y estructuras culturales.",
+            pedagogia: "Modelo CONSTRUYE, CIIJ y pedagogía digital.",
+            geek: "Cultura pop, gaming y coleccionismo.",
+            programacion: "Desarrollo de sistemas, Debian y WebDev.",
+            ia: "Automatización, modelos de lenguaje, n8n y herramientas de IA."
         };
 
         const container = document.getElementById('nodos-container');
-        const centerX = 400, centerY = 250, radius = 180;
+        const centerX = 400, centerY = 250, radius = 190;
 
         temas.forEach((tema, i) => {
             const angle = (i / temas.length) * 2 * Math.PI;
@@ -62,14 +66,14 @@
             container.innerHTML += `
                 <line x1="${centerX}" y1="${centerY}" x2="${x}" y2="${y}" class="line" />
                 <g onclick="mostrar('${tema.id}')">
-                    <circle cx="${x}" cy="${y}" r="35" class="node" />
-                    <text x="${x}" y="${y + 5}">${tema.label}</text>
+                    <circle cx="${x}" cy="${y}" r="35" class="node" style="fill: ${tema.color};" />
+                    <text x="${x}" y="${y + 3}">${tema.label}</text>
                 </g>
             `;
         });
 
         function mostrar(id) {
-            document.getElementById('pantalla').innerHTML = `<h2>${id.toUpperCase()}</h2><p>${descripciones[id]}</p>`;
+            document.getElementById('pantalla').innerHTML = `<h2>${id.toUpperCase()}</h2><p>${contenido[id]}</p>`;
         }
     </script>
 </body>
