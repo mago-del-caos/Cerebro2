@@ -2,62 +2,74 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Cerebro 2 | Pablo Adrian Rivera Juvenal</title>
+    <title>Cerebro 2 | Mapa de Conocimiento</title>
     <style>
-        body { font-family: 'Courier New', monospace; background: #000; color: #0f0; padding: 40px; }
-        h1 { color: #fff; text-shadow: 0 0 10px #0f0; }
-        .perfil { border: 1px solid #0f0; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,255,0,0.2); }
-        .red-neuronal { border: 1px solid #0f0; padding: 20px; text-align: center; }
-        #canvas-container { margin: 20px 0; }
-        button { background: #0f0; color: #000; border: none; padding: 10px 20px; font-weight: bold; cursor: pointer; border-radius: 4px; }
-        button:hover { background: #fff; }
-        .node { fill: #000; stroke: #0f0; stroke-width: 2; }
-        .line { stroke: #0f0; stroke-width: 1; opacity: 0.3; }
+        body { font-family: 'Courier New', monospace; background: #000; color: #0f0; padding: 20px; }
+        h1 { color: #fff; text-align: center; text-shadow: 0 0 5px #0f0; }
+        .nodo-activo { border: 1px solid #0f0; padding: 20px; margin: 20px auto; background: #050505; max-width: 600px; min-height: 100px; }
+        .red-svg { width: 100%; max-width: 800px; height: 500px; margin: 0 auto; display: block; }
+        .node { fill: #000; stroke: #0f0; stroke-width: 2; cursor: pointer; transition: 0.3s; }
+        .node:hover { fill: #0f0; }
+        text { fill: #0f0; font-size: 10px; font-weight: bold; pointer-events: none; text-anchor: middle; }
+        .line { stroke: #0f0; stroke-width: 1; opacity: 0.2; }
     </style>
 </head>
 <body>
-    <h1>Cerebro 2: Estructura Neuronal</h1>
+    <h1>Cerebro 2: Estructura Mental</h1>
     
-    <div class="perfil">
-        <h2>Maestro Pablo Adrian Rivera Juvenal</h2>
-        <p>Fundador y Director: Centro de Innovación e Investigación Juventud (CIIJ)</p>
-        <p>Especialista en Innovación Educativa y Pedagogía Digital</p>
-    </div>
+    <svg class="red-svg" viewBox="0 0 800 500">
+        <!-- Nodos -->
+        <g id="nodos-container"></g>
+    </svg>
 
-    <div class="red-neuronal">
-        <h2>Visualizador de Red</h2>
-        <p style="color: #fff;">"Construirse es construir el mundo"</p>
-        
-        <svg id="canvas-container" width="400" height="200">
-            <line x1="50" y1="50" x2="200" y2="50" class="line" />
-            <line x1="50" y1="50" x2="200" y2="150" class="line" />
-            <line x1="50" y1="150" x2="200" y2="50" class="line" />
-            <line x1="50" y1="150" x2="200" y2="150" class="line" />
-            <line x1="200" y1="50" x2="350" y2="100" class="line" />
-            <line x1="200" y1="150" x2="350" y2="100" class="line" />
-            
-            <circle cx="50" cy="50" r="15" class="node" id="n1"/>
-            <circle cx="50" cy="150" r="15" class="node" id="n2"/>
-            <circle cx="200" cy="50" r="15" class="node" id="n3"/>
-            <circle cx="200" cy="150" r="15" class="node" id="n4"/>
-            <circle cx="350" cy="100" r="15" class="node" id="n5"/>
-        </svg>
-
-        <div>
-            <p>Estado del Proceso: <span id="status">En reposo</span></p>
-            <button onclick="activarRed()">Propagación Adelante</button>
-        </div>
+    <div id="pantalla" class="nodo-activo">
+        <h2>Nodo Central</h2>
+        <p>Selecciona una rama para acceder a tu base de conocimientos.</p>
     </div>
 
     <script>
-        function activarRed() {
-            const nodos = document.querySelectorAll('.node');
-            document.getElementById('status').innerText = "Procesando...";
-            nodos.forEach(node => {
-                node.style.fill = "#0f0";
-                setTimeout(() => node.style.fill = "#000", 500);
-            });
-            setTimeout(() => document.getElementById('status').innerText = "Completado", 500);
+        const temas = [
+            { id: "filosofia", label: "FILOSOFÍA" }, { id: "derecho", label: "DERECHO" },
+            { id: "herbolaria", label: "HERBOLARIA" }, { id: "masoneria", label: "MASONERÍA" },
+            { id: "magia", label: "MAGIA" }, { id: "psicologia", label: "PSICOLOGÍA" },
+            { id: "sociologia", label: "SOCIOLOGÍA" }, { id: "pedagogia", label: "PEDAGOGÍA" },
+            { id: "geek", label: "GEEK" }, { id: "programacion", label: "PROGRAMACIÓN" },
+            { id: "ia", label: "IA" }
+        ];
+
+        const descripciones = {
+            filosofia: "Pensamiento mexicano, Sociedad del Conocimiento, existencialismo.",
+            derecho: "Docencia jurídica, normativa educativa y legal.",
+            herbolaria: "Estudio de propiedades naturales y medicina tradicional.",
+            masoneria: "Ritos, simbología, arquitectura sagrada y trabajo en logia.",
+            magia: "Sistemas simbólicos, teoría del ritual y metafísica.",
+            psicologia: "Psicopedagogía, conducta humana y procesos cognitivos.",
+            sociologia: "Dinámicas de grupos, estructuras sociales y evolución cultural.",
+            pedagogia: "Innovación, modelo CONSTRUYE, CIIJ y diseño de aprendizaje.",
+            geek: "Cultura pop, juegos, coleccionismo y estética digital.",
+            programacion: "Debian, desarrollo web, arquitectura de sistemas.",
+            ia: "Automatización, modelos de lenguaje, n8n y herramientas predictivas."
+        };
+
+        const container = document.getElementById('nodos-container');
+        const centerX = 400, centerY = 250, radius = 180;
+
+        temas.forEach((tema, i) => {
+            const angle = (i / temas.length) * 2 * Math.PI;
+            const x = centerX + radius * Math.cos(angle);
+            const y = centerY + radius * Math.sin(angle);
+
+            container.innerHTML += `
+                <line x1="${centerX}" y1="${centerY}" x2="${x}" y2="${y}" class="line" />
+                <g onclick="mostrar('${tema.id}')">
+                    <circle cx="${x}" cy="${y}" r="35" class="node" />
+                    <text x="${x}" y="${y + 5}">${tema.label}</text>
+                </g>
+            `;
+        });
+
+        function mostrar(id) {
+            document.getElementById('pantalla').innerHTML = `<h2>${id.toUpperCase()}</h2><p>${descripciones[id]}</p>`;
         }
     </script>
 </body>
