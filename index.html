@@ -1,36 +1,64 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Cerebro 2 - Red Neuronal</title>
-<style>
-body { font-family: 'Courier New', monospace; background:
-#000; color: #0f0; padding: 20px; }
-.nodo { border: 1px solid #0f0; padding: 10px; margin:
-10px; width: 200px; }
-</style>
+    <meta charset="UTF-8">
+    <title>Cerebro 2 | Pablo Adrian Rivera Juvenal</title>
+    <style>
+        body { font-family: 'Courier New', monospace; background: #000; color: #0f0; padding: 40px; }
+        h1 { color: #fff; text-shadow: 0 0 10px #0f0; }
+        .perfil { border: 1px solid #0f0; padding: 20px; margin-bottom: 20px; box-shadow: 0 0 10px rgba(0,255,0,0.2); }
+        .red-neuronal { border: 1px solid #0f0; padding: 20px; text-align: center; }
+        #canvas-container { margin: 20px 0; }
+        button { background: #0f0; color: #000; border: none; padding: 10px 20px; font-weight: bold; cursor: pointer; border-radius: 4px; }
+        button:hover { background: #fff; }
+        .node { fill: #000; stroke: #0f0; stroke-width: 2; }
+        .line { stroke: #0f0; stroke-width: 1; opacity: 0.3; }
+    </style>
 </head>
 <body>
-<h1>Cerebro 2: Red Neuronal Funcional</h1>
-<div class="nodo">
-<h3>Neurona Artificial</h3>
-<p>Entrada: <span id="input">0</span></p>
-<p>Salida: <span id="output">0</span></p>
-</div>
-<button onclick="ejecutarNeurona()">Disparar Neurona</button>
-<script>
-function sigmoide(x) {
-return 1 / (1 + Math.exp(-x));
-}
-function ejecutarNeurona() {
-let peso = 0.5;
-let entrada = Math.random();
-let resultado = sigmoide(entrada * peso);
-document.getElementById('input').innerText =
-entrada.toFixed(2);
-document.getElementById('output').innerText =
-resultado.toFixed(4);
-}
-</script>
+    <h1>Cerebro 2: Estructura Neuronal</h1>
+    
+    <div class="perfil">
+        <h2>Maestro Pablo Adrian Rivera Juvenal</h2>
+        <p>Fundador y Director: Centro de Innovación e Investigación Juventud (CIIJ)</p>
+        <p>Especialista en Innovación Educativa y Pedagogía Digital</p>
+    </div>
+
+    <div class="red-neuronal">
+        <h2>Visualizador de Red</h2>
+        <p style="color: #fff;">"Construirse es construir el mundo"</p>
+        
+        <svg id="canvas-container" width="400" height="200">
+            <line x1="50" y1="50" x2="200" y2="50" class="line" />
+            <line x1="50" y1="50" x2="200" y2="150" class="line" />
+            <line x1="50" y1="150" x2="200" y2="50" class="line" />
+            <line x1="50" y1="150" x2="200" y2="150" class="line" />
+            <line x1="200" y1="50" x2="350" y2="100" class="line" />
+            <line x1="200" y1="150" x2="350" y2="100" class="line" />
+            
+            <circle cx="50" cy="50" r="15" class="node" id="n1"/>
+            <circle cx="50" cy="150" r="15" class="node" id="n2"/>
+            <circle cx="200" cy="50" r="15" class="node" id="n3"/>
+            <circle cx="200" cy="150" r="15" class="node" id="n4"/>
+            <circle cx="350" cy="100" r="15" class="node" id="n5"/>
+        </svg>
+
+        <div>
+            <p>Estado del Proceso: <span id="status">En reposo</span></p>
+            <button onclick="activarRed()">Propagación Adelante</button>
+        </div>
+    </div>
+
+    <script>
+        function activarRed() {
+            const nodos = document.querySelectorAll('.node');
+            document.getElementById('status').innerText = "Procesando...";
+            nodos.forEach(node => {
+                node.style.fill = "#0f0";
+                setTimeout(() => node.style.fill = "#000", 500);
+            });
+            setTimeout(() => document.getElementById('status').innerText = "Completado", 500);
+        }
+    </script>
 </body>
 </html>
